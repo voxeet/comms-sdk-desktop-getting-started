@@ -35,3 +35,6 @@ yarn dist -c.electronDist=${PATH_NDS}
 ```shell
 ./dist/mac/iapi-sdk-desktop-gettingstarted.app/Contents/MacOS/iapi-sdk-desktop-gettingstarted
 ```
+
+## Usage
+To get a proper working conference, launch two instances of this application using the same consumer key and secret on the same system.
