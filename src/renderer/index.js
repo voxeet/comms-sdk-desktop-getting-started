@@ -9,7 +9,7 @@ import {
 } from "@voxeet/react-components";
 
 // Import Style
-import "@voxeet/react-components/dist/voxeet-react-components.css"; // Can you be customize, refer to https://github.com/voxeet/voxeet-assets-react-components
+import "@voxeet/react-components/dist/voxeet-react-components.css"; // Can be customized, refer to https://github.com/voxeet/voxeet-assets-react-components
 
 const reducers = combineReducers({
     voxeet: voxeetReducer,
