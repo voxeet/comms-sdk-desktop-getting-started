@@ -1,22 +1,26 @@
 {
   "name": "iapi-sdk-desktop-gettingstarted",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "[Getting Started](https://docs.dolby.io/interactivity/docs/getting-started-with-nds) with the Native Desktop SDK.",
   "license": "MIT",
   "scripts": {
-    "dev": "electron-webpack dev",
-    "compile": "electron-webpack",
-    "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+    "start": "nds ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voxeet/iapi-sdk-desktop-gettingstarted"
+  },
+  "keywords": [
+    "getting-started",
+    "electron",
+    "sdk"
+  ],
+  "author": "dolby.io",
+  "bugs": {
+    "url": "https://github.com/voxeet/iapi-sdk-desktop-gettingstarted"
+  },
+  "homepage": "https://docs.dolby.io/interactivity/docs/getting-started-with-nds",
   "dependencies": {
-    "@voxeet/react-redux-5.1.1": "5.1.1",
-    "source-map-support": "^0.5.16"
-  },
-  "devDependencies": {
-    "@babel/preset-react": "^7.14.5",
-    "electron": "9.2.0",
-    "electron-builder": "^22.4.1",
-    "electron-webpack": "^2.8.2",
-    "webpack": "~4.42.1"
+    "@dolbyio/native-desktop-sdk": "^1.0.0-beta.1"
   }
 }
