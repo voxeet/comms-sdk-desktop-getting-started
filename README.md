@@ -1,4 +1,4 @@
-# Dolby.io Communications APIs Native Desktop SDK Getting Started app
+# Dolby.io Communications SDK for Desktop Getting Started app
 
 This is the sample app from the NDS app used in the
 [Getting Started](https://docs.dolby.io/interactivity/docs/getting-started-with-nds) article. 
