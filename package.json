@@ -21,6 +21,6 @@
   },
   "homepage": "https://docs.dolby.io/interactivity/docs/getting-started-with-nds",
   "dependencies": {
-    "@dolbyio/native-desktop-sdk": "^1.0.0-beta.1"
+    "@dolbyio/native-desktop-sdk": "^1.0.0-beta.3"
   }
 }
