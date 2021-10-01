@@ -11,8 +11,37 @@
     <div id="app">
         <h1 id="name-message">You are logged out.</h1>
 
+        <!-- Preview -->
+        <div id="preview">
+            <h3>Preview</h3>
+            <video id="preview-video" autoplay="true"/>
+        </div>
+
+        <!-- Video filters actions in preview -->
+        <div id="preview-actions">
+            <button id="background-blur-preview-btn" disabled>Background Blur</button>
+            <button id="background-image-preview-btn" disabled>Background Image</button>
+            <button id="stop-video-filter-preview-btn" disabled>Stop Video Filter</button>
+
+        </div>
+
+        <!-- Background image file in preview-->
+        <div>
+            <label>Background image JPEG/PNG/BMP
+              <input id="background-image-preview-input" type="file" disabled/>
+            </label>
+        </div>
+
+        <!-- Video denoise in preview -->
+        <div>
+            <label>Video denoise
+              <input id="video-denoise-preview-chk" type="checkbox" disabled/>
+            </label>
+        </div>
+
         <!-- Join or Leave a Conference -->
         <div id="form">
+            <h3>Conference</h3>
             <label>Conference alias :</label>
             <input id="alias-input" value="Avengers meeting" />
             <button id="join-btn" disabled>Join</button>
@@ -33,7 +62,22 @@
         <!-- Video Filters -->
         <div id="video-filters">
             <button id="background-blur-btn" disabled>Background Blur</button>
+            <button id="background-image-btn" disabled>Background Image</button>
             <button id="stop-video-filter-btn" disabled>Stop Video Filter</button>
+        </div>
+
+        <!-- Background image file-->
+        <div>
+            <label>Background image JPEG/PNG/BMP
+              <input id="background-image-input" type="file" disabled/>
+            </label>
+        </div>
+
+        <!-- Video denoise -->
+        <div>
+            <label>Video denoise
+              <input id="video-denoise-chk" type="checkbox" disabled/>
+            </label>
         </div>
 
         <!-- Recording Actions and Status -->

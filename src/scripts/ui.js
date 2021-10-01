@@ -1,4 +1,10 @@
 const initUI = () => {
+  const previewVideo = document.getElementById('preview-video');
+  const backgroundBlurPreviewBtn = document.getElementById('background-blur-preview-btn');
+  const backgroundImagePreviewBtn = document.getElementById('background-image-preview-btn');
+  const stopVideoFilterPreviewBtn = document.getElementById('stop-video-filter-preview-btn');
+  const backgroundImagePreviewInput = document.getElementById('background-image-preview-input');
+  const videoDenoisePreviewChk = document.getElementById('video-denoise-preview-chk');
   const nameMessage = document.getElementById('name-message');
   const joinButton = document.getElementById('join-btn');
   const conferenceAliasInput = document.getElementById('alias-input');
@@ -11,13 +17,79 @@ const initUI = () => {
   const startScreenShareBtn = document.getElementById('start-screenshare-btn');
   const stopScreenShareBtn = document.getElementById('stop-screenshare-btn');
   const backgroundBlurBtn = document.getElementById('background-blur-btn');
+  const backgroundImageBtn = document.getElementById('background-image-btn');
   const stopVideoFilterBtn = document.getElementById('stop-video-filter-btn');
+  const backgroundImageInput = document.getElementById('background-image-input');
+  const videoDenoiseChk = document.getElementById('video-denoise-chk');
   const startRecordingBtn = document.getElementById('start-recording-btn');
   const stopRecordingBtn = document.getElementById('stop-recording-btn');
+
+  // Video filter cache
+  let videoFilterMode = 'none';
 
   // Update the login message with the name of the user
   nameMessage.innerHTML = `You are logged in as ${randomName}`;
   joinButton.disabled = false;
+
+  // Obtain preview video stream
+  const initPreview = () => {
+    navigator.mediaDevices.getUserMedia({video: {width: 320, height: 240}})
+      .then((stream) => {
+        videoFilterMode = 'none';
+
+        previewVideo.srcObject = stream;
+        backgroundBlurPreviewBtn.disabled = false;
+        stopVideoFilterPreviewBtn.disabled = true;
+        backgroundImagePreviewBtn.disabled = backgroundImagePreviewInput.files.length === 0;
+        backgroundImagePreviewInput.disabled = false;
+        videoDenoisePreviewChk.disabled = false;
+        videoDenoisePreviewChk.checked = false;
+      })
+      .catch((err) => console.error(err));
+  }
+  initPreview();
+
+  backgroundBlurPreviewBtn.onclick = () => {
+    // Start the Background Blur on the preview video
+    videoFilterMode = 'bokeh';
+    setVideoFilterInPreview(videoFilterMode)
+      .then(() => {
+        backgroundBlurPreviewBtn.disabled = true;
+        stopVideoFilterPreviewBtn.disabled = false;
+        backgroundImagePreviewBtn.disabled = backgroundImagePreviewInput.files.length === 0;
+      });
+  }
+
+  stopVideoFilterPreviewBtn.onclick = () => {
+    // Stop background effects on the preview video
+    videoFilterMode = 'none';
+    setVideoFilterInPreview(videoFilterMode)
+      .then(() => {
+        backgroundBlurPreviewBtn.disabled = false;
+        stopVideoFilterPreviewBtn.disabled = true;
+        backgroundImagePreviewBtn.disabled = backgroundImagePreviewInput.files.length === 0;
+      });
+  }
+
+  backgroundImagePreviewBtn.onclick = () => {
+    // Start the Background Image on the preview video
+    videoFilterMode = 'staticimage';
+    setVideoFilterInPreview(videoFilterMode)
+      .then(() => {
+        backgroundBlurPreviewBtn.disabled = false;
+        stopVideoFilterPreviewBtn.disabled = false;
+        backgroundImagePreviewBtn.disabled = true;
+      });
+  }
+
+  backgroundImagePreviewInput.onchange = () => {
+    backgroundImagePreviewBtn.disabled = backgroundImagePreviewInput.files.length === 0;
+  }
+
+  videoDenoisePreviewChk.onclick = () => {
+    // Enable/disabled video noise reduction on the preview video
+    setVideoFilterInPreview(videoFilterMode);
+  }
 
   joinButton.onclick = () => {
     // Default conference parameters
@@ -40,12 +112,21 @@ const initUI = () => {
     VoxeetSDK.conference.create(conferenceOptions)
       .then((conference) => {
         // See: https://docs.dolby.io/interactivity/docs/js-client-sdk-model-joinoptions
+
+        // Create video filter options which will be applied just after join
+        const videoFilterOptions = {
+          imageFile: backgroundImagePreviewInput.files.length ? backgroundImagePreviewInput.files[0] : undefined,
+          videoDenoise: videoDenoisePreviewChk.checked
+        }
+
         const joinOptions = {
           constraints: {
             audio: true,
             video: false
           },
-          simulcast: false
+          simulcast: false,
+          videoFilter: videoFilterMode,
+          videoFilterOptions: videoFilterOptions
         };
 
         // 2. Join the conference
@@ -53,6 +134,12 @@ const initUI = () => {
           .then((conf) => {
             lblDolbyVoice.innerHTML = `Dolby Voice is ${conf.params.dolbyVoice ? 'On' : 'Off'}.`;
 
+            previewVideo.srcObject = null;
+            backgroundBlurPreviewBtn.disabled = true;
+            stopVideoFilterPreviewBtn.disabled = true;
+            backgroundImagePreviewBtn.disabled = true;
+            backgroundImagePreviewInput.disabled = true;
+            videoDenoisePreviewChk.disabled = true;
             conferenceAliasInput.disabled = true;
             joinButton.disabled = true;
             leaveButton.disabled = false;
@@ -61,6 +148,9 @@ const initUI = () => {
             stopAudioBtn.disabled = false;
             startScreenShareBtn.disabled = false;
             startRecordingBtn.disabled = false;
+
+            backgroundImageInput.files = backgroundImagePreviewInput.files;
+            videoDenoiseChk.checked = videoDenoisePreviewChk.checked;
           })
           .catch((err) => console.error(err));
       })
@@ -72,6 +162,8 @@ const initUI = () => {
     VoxeetSDK.conference.leave()
       .then(() => {
         lblDolbyVoice.innerHTML = '';
+
+        initPreview();
 
         conferenceAliasInput.disabled = false;
         joinButton.disabled = false;
@@ -86,6 +178,9 @@ const initUI = () => {
         stopRecordingBtn.disabled = true;
         backgroundBlurBtn.disabled = true;
         stopVideoFilterBtn.disabled = true;
+        backgroundImageBtn.disabled = true;
+        backgroundImageInput.disabled = true;
+        videoDenoiseChk.disabled = true;
       })
       .catch((err) => console.error(err));
   };
@@ -96,8 +191,11 @@ const initUI = () => {
       .then(() => {
         startVideoBtn.disabled = true;
         stopVideoBtn.disabled = false;
-        backgroundBlurBtn.disabled = false;
-        stopVideoFilterBtn.disabled = true;
+        backgroundBlurBtn.disabled = videoFilterMode === 'bokeh';
+        stopVideoFilterBtn.disabled = videoFilterMode === 'none';
+        backgroundImageBtn.disabled = videoFilterMode === 'staticimage' || backgroundImageInput.files.length === 0;
+        backgroundImageInput.disabled = false
+        videoDenoiseChk.disabled = false;
       })
       .catch((err) => console.error(err));
   };
@@ -110,6 +208,9 @@ const initUI = () => {
         startVideoBtn.disabled = false;
         backgroundBlurBtn.disabled = true;
         stopVideoFilterBtn.disabled = true;
+        backgroundImageBtn.disabled = true;
+        backgroundImageInput.disabled = true;
+        videoDenoiseChk.disabled = true;
       })
       .catch((err) => console.error(err));
   };
@@ -153,24 +254,47 @@ const initUI = () => {
 
   backgroundBlurBtn.onclick = () => {
     // Start the Background Blur on the local video
-    VoxeetSDK.videoFilters.setFilter('bokeh')
+    videoFilterMode = 'bokeh';
+    setVideoFilterInConference(videoFilterMode)
       .then(() => {
         backgroundBlurBtn.disabled = true;
         stopVideoFilterBtn.disabled = false;
+        backgroundImageBtn.disabled = backgroundImageInput.files.length === 0;;
       })
       .catch((err) => console.error(err));
   };
 
   stopVideoFilterBtn.onclick = () => {
     // Stop the video filter applied on the local video
-    VoxeetSDK.videoFilters.setFilter('none')
+    videoFilterMode = 'none';
+    setVideoFilterInConference(videoFilterMode)
       .then(() => {
         backgroundBlurBtn.disabled = false;
         stopVideoFilterBtn.disabled = true;
+        backgroundImageBtn.disabled = backgroundImageInput.files.length === 0;
       })
       .catch((err) => console.error(err));
   };
 
+  backgroundImageBtn.onclick = () => {
+    // Start the Background Image on the local video
+    videoFilterMode = 'staticimage';
+    setVideoFilterInConference(videoFilterMode)
+      .then(() => {
+        backgroundBlurBtn.disabled = false;
+        stopVideoFilterBtn.disabled = false;
+        backgroundImageBtn.disabled = true;
+      });
+  }
+
+  backgroundImageInput.onchange = () => {
+    backgroundImageBtn.disabled = backgroundImageInput.files.length === 0;
+  }
+
+  videoDenoiseChk.onclick = () => {
+    // Enable/disabled video noise reduction on the preview video
+    setVideoFilterInConference(videoFilterMode);
+  }
 
   startRecordingBtn.onclick = () => {
     let recordStatus = document.getElementById('record-status');
@@ -285,4 +409,32 @@ const removeScreenShareNode = () => {
   
   const stopScreenShareBtn = document.getElementById('stop-screenshare-btn');
   stopScreenShareBtn.disabled = true;
+}
+
+const setVideoFilterInPreview = (mode) => {
+  const previewVideo = document.getElementById('preview-video');
+  const backgroundImagePreviewInput = document.getElementById('background-image-preview-input');
+  const videoDenoisePreviewChk = document.getElementById('video-denoise-preview-chk');
+
+  videoFilterOptions = {
+    stream: previewVideo.srcObject,
+    imageFile: backgroundImagePreviewInput.files.length ? backgroundImagePreviewInput.files[0] : undefined,
+    videoDenoise: videoDenoisePreviewChk.checked
+  }
+
+  return VoxeetSDK.videoFilters.setFilter(mode, videoFilterOptions)
+    .catch((err) => console.error(err));
+}
+
+const setVideoFilterInConference = (mode) => {
+  const backgroundImageInput = document.getElementById('background-image-input');
+  const videoDenoiseChk = document.getElementById('video-denoise-chk');
+
+  videoFilterOptions = {
+    imageFile: backgroundImageInput.files.length ? backgroundImageInput.files[0] : undefined,
+    videoDenoise: videoDenoiseChk.checked
+  }
+
+  return VoxeetSDK.videoFilters.setFilter(mode, videoFilterOptions)
+    .catch((err) => console.error(err));
 }
