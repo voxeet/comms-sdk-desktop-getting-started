@@ -31,22 +31,7 @@ const initUI = () => {
   nameMessage.innerHTML = `You are logged in as ${randomName}`;
   joinButton.disabled = false;
 
-  // Obtain preview video stream
-  const initPreview = () => {
-    navigator.mediaDevices.getUserMedia({video: {width: 320, height: 240}})
-      .then((stream) => {
-        videoFilterMode = 'none';
-
-        previewVideo.srcObject = stream;
-        backgroundBlurPreviewBtn.disabled = false;
-        stopVideoFilterPreviewBtn.disabled = true;
-        backgroundImagePreviewBtn.disabled = backgroundImagePreviewInput.files.length === 0;
-        backgroundImagePreviewInput.disabled = false;
-        videoDenoisePreviewChk.disabled = false;
-        videoDenoisePreviewChk.checked = false;
-      })
-      .catch((err) => console.error(err));
-  }
+  // Init preview video and buttons
   initPreview();
 
   backgroundBlurPreviewBtn.onclick = () => {
@@ -163,7 +148,9 @@ const initUI = () => {
       .then(() => {
         lblDolbyVoice.innerHTML = '';
 
+        // Init preview and back to default filter mode
         initPreview();
+        videoFilterMode = 'none';
 
         conferenceAliasInput.disabled = false;
         joinButton.disabled = false;
@@ -292,7 +279,7 @@ const initUI = () => {
   }
 
   videoDenoiseChk.onclick = () => {
-    // Enable/disabled video noise reduction on the preview video
+    // Enable/disabled video noise reduction on the local video
     setVideoFilterInConference(videoFilterMode);
   }
 
@@ -416,12 +403,14 @@ const setVideoFilterInPreview = (mode) => {
   const backgroundImagePreviewInput = document.getElementById('background-image-preview-input');
   const videoDenoisePreviewChk = document.getElementById('video-denoise-preview-chk');
 
+  // Set |stream| field to apply a filter on this stream
   videoFilterOptions = {
     stream: previewVideo.srcObject,
     imageFile: backgroundImagePreviewInput.files.length ? backgroundImagePreviewInput.files[0] : undefined,
     videoDenoise: videoDenoisePreviewChk.checked
   }
 
+  // Set video filter on specific |stream|
   return VoxeetSDK.videoFilters.setFilter(mode, videoFilterOptions)
     .catch((err) => console.error(err));
 }
@@ -435,6 +424,31 @@ const setVideoFilterInConference = (mode) => {
     videoDenoise: videoDenoiseChk.checked
   }
 
+  // Set video filter on a local stream
   return VoxeetSDK.videoFilters.setFilter(mode, videoFilterOptions)
+    .catch((err) => console.error(err));
+}
+
+const initPreview = () => {
+  return navigator.mediaDevices.getUserMedia({video: {width: 320, height: 240}})
+    .then((stream) => {
+      const previewVideo = document.getElementById('preview-video');
+      previewVideo.srcObject = stream;
+
+      const backgroundBlurPreviewBtn = document.getElementById('background-blur-preview-btn');
+      backgroundBlurPreviewBtn.disabled = false;
+
+      const backgroundImagePreviewInput = document.getElementById('background-image-preview-input');
+      backgroundImagePreviewInput.disabled = false;
+
+      const backgroundImagePreviewBtn = document.getElementById('background-image-preview-btn');
+      backgroundImagePreviewBtn.disabled = backgroundImagePreviewInput.files.length === 0;
+
+      const stopVideoFilterPreviewBtn = document.getElementById('stop-video-filter-preview-btn');
+      stopVideoFilterPreviewBtn.disabled = true;
+
+      const videoDenoisePreviewChk = document.getElementById('video-denoise-preview-chk');
+      videoDenoisePreviewChk.disabled = false;
+    })
     .catch((err) => console.error(err));
 }
