@@ -1,10 +1,11 @@
+const previewVideo = document.getElementById('preview-video');
+const backgroundBlurPreviewBtn = document.getElementById('background-blur-preview-btn');
+const backgroundImagePreviewBtn = document.getElementById('background-image-preview-btn');
+const stopVideoFilterPreviewBtn = document.getElementById('stop-video-filter-preview-btn');
+const backgroundImagePreviewInput = document.getElementById('background-image-preview-input');
+const videoDenoisePreviewChk = document.getElementById('video-denoise-preview-chk');
+
 const initUI = () => {
-  const previewVideo = document.getElementById('preview-video');
-  const backgroundBlurPreviewBtn = document.getElementById('background-blur-preview-btn');
-  const backgroundImagePreviewBtn = document.getElementById('background-image-preview-btn');
-  const stopVideoFilterPreviewBtn = document.getElementById('stop-video-filter-preview-btn');
-  const backgroundImagePreviewInput = document.getElementById('background-image-preview-input');
-  const videoDenoisePreviewChk = document.getElementById('video-denoise-preview-chk');
   const nameMessage = document.getElementById('name-message');
   const joinButton = document.getElementById('join-btn');
   const conferenceAliasInput = document.getElementById('alias-input');
@@ -308,7 +309,6 @@ const initUI = () => {
       })
       .catch((err) => console.error(err));
   };
-
 };
 
 // Add a video stream to the web page
@@ -399,12 +399,8 @@ const removeScreenShareNode = () => {
 }
 
 const setVideoFilterInPreview = (mode) => {
-  const previewVideo = document.getElementById('preview-video');
-  const backgroundImagePreviewInput = document.getElementById('background-image-preview-input');
-  const videoDenoisePreviewChk = document.getElementById('video-denoise-preview-chk');
-
   // Set |stream| field to apply a filter on this stream
-  videoFilterOptions = {
+  const videoFilterOptions = {
     stream: previewVideo.srcObject,
     imageFile: backgroundImagePreviewInput.files.length ? backgroundImagePreviewInput.files[0] : undefined,
     videoDenoise: videoDenoisePreviewChk.checked
@@ -416,10 +412,7 @@ const setVideoFilterInPreview = (mode) => {
 }
 
 const setVideoFilterInConference = (mode) => {
-  const backgroundImageInput = document.getElementById('background-image-input');
-  const videoDenoiseChk = document.getElementById('video-denoise-chk');
-
-  videoFilterOptions = {
+  const videoFilterOptions = {
     imageFile: backgroundImageInput.files.length ? backgroundImageInput.files[0] : undefined,
     videoDenoise: videoDenoiseChk.checked
   }
@@ -432,22 +425,11 @@ const setVideoFilterInConference = (mode) => {
 const initPreview = () => {
   return navigator.mediaDevices.getUserMedia({video: {width: 320, height: 240}})
     .then((stream) => {
-      const previewVideo = document.getElementById('preview-video');
       previewVideo.srcObject = stream;
-
-      const backgroundBlurPreviewBtn = document.getElementById('background-blur-preview-btn');
       backgroundBlurPreviewBtn.disabled = false;
-
-      const backgroundImagePreviewInput = document.getElementById('background-image-preview-input');
       backgroundImagePreviewInput.disabled = false;
-
-      const backgroundImagePreviewBtn = document.getElementById('background-image-preview-btn');
       backgroundImagePreviewBtn.disabled = backgroundImagePreviewInput.files.length === 0;
-
-      const stopVideoFilterPreviewBtn = document.getElementById('stop-video-filter-preview-btn');
       stopVideoFilterPreviewBtn.disabled = true;
-
-      const videoDenoisePreviewChk = document.getElementById('video-denoise-preview-chk');
       videoDenoisePreviewChk.disabled = false;
     })
     .catch((err) => console.error(err));

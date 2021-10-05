@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Basic Web Video Conference Application</title>
     <script type="text/javascript" src="https://unpkg.com/@voxeet/voxeet-web-sdk@3.3.0-beta.4/dist/voxeet-sdk.js"></script>
-    <script type="text/javascript" src="scripts/ui.js"></script>
 </head>
 
 <body style="background-color: white;">
@@ -22,21 +21,14 @@
             <button id="background-blur-preview-btn" disabled>Background Blur</button>
             <button id="background-image-preview-btn" disabled>Background Image</button>
             <button id="stop-video-filter-preview-btn" disabled>Stop Video Filter</button>
-
+            <label>Video denoise</label>
+            <input id="video-denoise-preview-chk" type="checkbox" disabled/>
         </div>
 
         <!-- Background image file in preview-->
         <div>
-            <label>Background image JPEG/PNG/BMP
-              <input id="background-image-preview-input" type="file" disabled/>
-            </label>
-        </div>
-
-        <!-- Video denoise in preview -->
-        <div>
-            <label>Video denoise
-              <input id="video-denoise-preview-chk" type="checkbox" disabled/>
-            </label>
+            <label>Background image JPEG/PNG/BMP</label>
+            <input id="background-image-preview-input" type="file" disabled/>
         </div>
 
         <!-- Join or Leave a Conference -->
@@ -64,20 +56,14 @@
             <button id="background-blur-btn" disabled>Background Blur</button>
             <button id="background-image-btn" disabled>Background Image</button>
             <button id="stop-video-filter-btn" disabled>Stop Video Filter</button>
+            <label>Video denoise</label>
+            <input id="video-denoise-chk" type="checkbox" disabled/>
         </div>
 
         <!-- Background image file-->
         <div>
-            <label>Background image JPEG/PNG/BMP
-              <input id="background-image-input" type="file" disabled/>
-            </label>
-        </div>
-
-        <!-- Video denoise -->
-        <div>
-            <label>Video denoise
-              <input id="video-denoise-chk" type="checkbox" disabled/>
-            </label>
+            <label>Background image JPEG/PNG/BMP</label>
+            <input id="background-image-input" type="file" disabled/>
         </div>
 
         <!-- Recording Actions and Status -->
@@ -99,6 +85,7 @@
         <!-- Container for the Screen Share -->
         <div id="screenshare-container"></div>
     </div>
+    <script type="text/javascript" src="scripts/ui.js"></script>
     <script type="text/javascript" src="scripts/client.js"></script>
 </body>
 </html>
