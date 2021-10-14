@@ -1,14 +1,14 @@
 {
-  "name": "iapi-sdk-desktop-gettingstarted",
+  "name": "comms-sdk-desktop-gettingstarted",
   "version": "1.0.0",
-  "description": "[Getting Started](https://docs.dolby.io/interactivity/docs/getting-started-with-nds) with the Native Desktop SDK.",
+  "description": "[Getting Started](https://docs.dolby.io/communications-apis/docs/getting-started-with-desktop-sdk) with the Desktop SDK.",
   "license": "MIT",
   "scripts": {
     "start": "nds ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/voxeet/iapi-sdk-desktop-gettingstarted"
+    "url": "git+https://github.com/voxeet/comms-sdk-desktop-gettingstarted"
   },
   "keywords": [
     "getting-started",
@@ -17,10 +17,10 @@
   ],
   "author": "dolby.io",
   "bugs": {
-    "url": "https://github.com/voxeet/iapi-sdk-desktop-gettingstarted"
+    "url": "https://github.com/voxeet/comms-sdk-desktop-gettingstarted"
   },
-  "homepage": "https://docs.dolby.io/interactivity/docs/getting-started-with-nds",
+  "homepage": "https://docs.dolby.io/communications-apis/docs/getting-started-with-desktop-sdk",
   "dependencies": {
-    "@dolbyio/native-desktop-sdk": "^1.0.0-beta.3"
+    "@dolbyio/native-desktop-sdk": "^1.0.0-beta.4"
   }
 }
