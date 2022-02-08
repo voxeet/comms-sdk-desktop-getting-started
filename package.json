@@ -1,14 +1,14 @@
 {
   "name": "comms-sdk-desktop-gettingstarted",
   "version": "1.0.0",
-  "description": "[Getting Started](https://docs.dolby.io/communications-apis/docs/getting-started-with-desktop-sdk) with the Desktop SDK.",
+  "description": "[Getting Started](https://docs.dolby.io/communications-apis/docs/getting-started-with-desktop-sdk) with the Dolby.io Communications SDK for Desktop.",
   "license": "MIT",
   "scripts": {
     "start": "nds ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/voxeet/comms-sdk-desktop-gettingstarted"
+    "url": "git+https://github.com/dolbyio-samples/comms-sdk-desktop-gettingstarted"
   },
   "keywords": [
     "getting-started",
@@ -17,10 +17,10 @@
   ],
   "author": "dolby.io",
   "bugs": {
-    "url": "https://github.com/voxeet/comms-sdk-desktop-gettingstarted"
+    "url": "https://github.com/dolbyio-samples/comms-sdk-desktop-gettingstarted/issues"
   },
   "homepage": "https://docs.dolby.io/communications-apis/docs/getting-started-with-desktop-sdk",
   "dependencies": {
-    "@dolbyio/native-desktop-sdk": "^1.0.0-beta.4"
+    "@dolbyio/native-desktop-sdk": "^1.0.1"
   }
 }
