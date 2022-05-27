@@ -1,23 +1,23 @@
 # Dolby.io Communications SDK for Desktop Getting Started app
 
 This is the sample app from the NDS app used in the
-[Getting Started](https://docs.dolby.io/interactivity/docs/getting-started-with-nds) article. 
+[Getting Started](https://docs.dolby.io/communications-apis/docs/getting-started-with-desktop-sdk) article. 
 
 You can find additional reference documentation here:
-- [JavaScript Reference](https://docs.dolby.io/interactivity/docs/js-client-sdk-voxeetsdk)
+- [JavaScript Reference](https://docs.dolby.io/communications-apis/docs/js-client-sdk-voxeetsdk)
 
 ## Run this project
 
 Clone the repo:
 
 ```bash
-git clone https://github.com/voxeet/comms-sdk-desktop-gettingstarted
+git clone https://github.com/dolbyio-samples/comms-sdk-desktop-getting-started
 ```
 
 Navigate to the folder:
 
 ```bash
-cd comms-sdk-desktop-gettingstarted
+cd comms-sdk-desktop-getting-started
 ```
 
 Install the dependencies:
@@ -26,8 +26,8 @@ Install the dependencies:
 npm install
 ```
 
-Open the file `src/scripts/client.js` and locate the `VoxeetSDK.initialize('customerKey', 'customerSecret');` function.  
-Replace the `customerKey` and `customerSecret` strings with your Consumer Key and Consumer Secret.
+Open the file `src/scripts/client.js` and locate the `VoxeetSDK.initializeToken` function.  
+Generate a client access token from the Dolby.io dashboard and insert into access_token variable.
 
 Run the project:
 
